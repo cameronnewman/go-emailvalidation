@@ -1,4 +1,4 @@
-lanuage: go
+lanuage: generic
 sudo: false
 ignore:
   - examples/*
