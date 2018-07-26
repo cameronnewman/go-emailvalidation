@@ -1,0 +1,17 @@
+language: go
+sudo: false
+go:
+  - 1.7
+  - 1.8
+  - 1.9
+env:
+  - GOARCH=amd64
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+
+sudo: required
+
+services:
+  - docker
