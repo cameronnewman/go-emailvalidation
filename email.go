@@ -34,8 +34,19 @@ func (e *Validation) ValidateEmailAddress(email string) error {
 		return ErrEmailInvalidFormat
 	}
 
-	_, host := e.SplitEmailAddress(email)
-	_, err := net.LookupMX(host)
+	_, domain := e.SplitEmailAddress(email)
+
+	err := e.ValidateDomainMailRecords(domain)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+//ValidateDomainMailRecords - validates a domain MX records via a DNS lookup
+func (e *Validation) ValidateDomainMailRecords(domain string) error {
+
+	_, err := net.LookupMX(domain)
 	if err != nil {
 		return ErrEmailInvalidDomain
 	}
