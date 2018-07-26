@@ -1,2 +1,18 @@
 # go-emailvalidation
-a simple package to validate email addresses
+
+## Purpose ##
+
+Simple Email Validation package.
+
+[![GoDoc][1]][2]
+[![GoCard][3]][4]
+[![Build][5]][6]
+
+[1]: https://godoc.org/github.com/cameronnewman/go-emailvalidation?status.svg
+[2]: https://godoc.org/github.com/cameronnewman/go-emailvalidation
+[3]: https://goreportcard.com/badge/github.com/cameronnewman/go-emailvalidation
+[4]: https://goreportcard.com/report/github.com/cameronnewman/go-emailvalidation
+[5]: https://travis-ci.org/cameronnewman/go-emailvalidation.svg?branch=master
+[6]: https://travis-ci.org/cameronnewman/go-emailvalidation
+
+## Usage
