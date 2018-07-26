@@ -16,3 +16,26 @@ Simple Email Validation package.
 [6]: https://travis-ci.org/cameronnewman/go-emailvalidation
 
 ## Usage
+
+```
+package main
+
+import (
+	"fmt"
+
+	"github.com/cameronnewman/go-emailvalidation"
+)
+
+func main() {
+
+	emailaddress := "john.snow@gmaiiiiiiillllll.com"
+
+	e := email.NewValidation()
+
+	err := e.ValidateEmailAddress(emailaddress)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+}
+```
