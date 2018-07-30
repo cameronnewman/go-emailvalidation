@@ -10,9 +10,7 @@ func main() {
 
 	emailaddress := "john.snow@gmaiiiiiiillllll.com"
 
-	e := email.NewValidation()
-
-	err := e.ValidateEmailAddress(emailaddress)
+	err := email.New().ValidateEmailAddress(emailaddress)
 	if err != nil {
 		fmt.Println(err)
 	}

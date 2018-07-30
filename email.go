@@ -21,10 +21,9 @@ var (
 type Validation struct {
 }
 
-//NewValidation returns a new Validation struct
-func NewValidation() *Validation {
-	e := &Validation{}
-	return e
+//New returns a new Validation struct
+func New() *Validation {
+	return &Validation{}
 }
 
 //ValidateEmailAddress - validates and email address via a regix and then a DNS lookup for MX records

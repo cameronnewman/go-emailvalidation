@@ -16,7 +16,7 @@ func TestEmailValidation_ValidateEmailAddress(t *testing.T) {
 	}{
 		{
 			"ValidEmailAddress",
-			NewValidation(),
+			New(),
 			args{
 				email: "john.snow@gmail.com",
 			},
@@ -24,7 +24,7 @@ func TestEmailValidation_ValidateEmailAddress(t *testing.T) {
 		},
 		{
 			"InvalidEmailAddress/Format",
-			NewValidation(),
+			New(),
 			args{
 				email: "john.snow()()()@gmail.com",
 			},
@@ -32,7 +32,7 @@ func TestEmailValidation_ValidateEmailAddress(t *testing.T) {
 		},
 		{
 			"InvalidEmailAddress/Format",
-			NewValidation(),
+			New(),
 			args{
 				email: "john.snow(*&(&*))@gmail.com",
 			},
@@ -40,7 +40,7 @@ func TestEmailValidation_ValidateEmailAddress(t *testing.T) {
 		},
 		{
 			"InvalidEmailAddress/Domain",
-			NewValidation(),
+			New(),
 			args{
 				email: "john.snow&@gggggggmmmmaaaiiilllll.com",
 			},
@@ -69,7 +69,7 @@ func TestEmailValidation_ValidateDomainMailRecords(t *testing.T) {
 	}{
 		{
 			"ValidDomain",
-			NewValidation(),
+			New(),
 			args{
 				domain: "gmail.com",
 			},
@@ -77,7 +77,7 @@ func TestEmailValidation_ValidateDomainMailRecords(t *testing.T) {
 		},
 		{
 			"InvalidDomain/NonExistantDomain",
-			NewValidation(),
+			New(),
 			args{
 				domain: "gggggggmmmmaaaiiilllll.com",
 			},
@@ -85,7 +85,7 @@ func TestEmailValidation_ValidateDomainMailRecords(t *testing.T) {
 		},
 		{
 			"InvalidDomain/NoMailRecords",
-			NewValidation(),
+			New(),
 			args{
 				domain: "support.google.com",
 			},
@@ -115,7 +115,7 @@ func TestEmailValidation_SplitEmailAddress(t *testing.T) {
 	}{
 		{
 			"ValidEmailAddress",
-			NewValidation(),
+			New(),
 			args{
 				email: "john.snow@gmail.com",
 			},
@@ -124,7 +124,7 @@ func TestEmailValidation_SplitEmailAddress(t *testing.T) {
 		},
 		{
 			"InValidEmailAddress",
-			NewValidation(),
+			New(),
 			args{
 				email: "john.snow_gmail.com",
 			},
@@ -133,7 +133,7 @@ func TestEmailValidation_SplitEmailAddress(t *testing.T) {
 		},
 		{
 			"InValidEmailAddress",
-			NewValidation(),
+			New(),
 			args{
 				email: "john.snow@@gmail.com",
 			},
