@@ -1,7 +1,7 @@
 # Project Name
 
 SHA1         		:= $(shell git rev-parse --verify --short HEAD)
-BUILD_IMAGE			:= $(shell echo "golang:1.9")
+BUILD_IMAGE			:= $(shell echo "golang:1.11.4")
 PWD					:= $(shell pwd)
 
 
