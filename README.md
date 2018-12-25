@@ -7,7 +7,6 @@ Simple Email Validation package.
 [![GoDoc][1]][2]
 [![GoCard][3]][4]
 [![Build][5]][6]
-[![Known Vulnerabilities][7]][8]
 
 [1]: https://godoc.org/github.com/cameronnewman/go-emailvalidation?status.svg
 [2]: https://godoc.org/github.com/cameronnewman/go-emailvalidation
@@ -15,8 +14,6 @@ Simple Email Validation package.
 [4]: https://goreportcard.com/report/github.com/cameronnewman/go-emailvalidation
 [5]: https://travis-ci.org/cameronnewman/go-emailvalidation.svg?branch=master
 [6]: https://travis-ci.org/cameronnewman/go-emailvalidation
-[7]: https://snyk.io/test/github/cameronnewman/go-emailvalidation/badge.svg
-[8]: https://snyk.io/test/github/cameronnewman/go-emailvalidation
 
 ## Usage
 
