@@ -1,5 +1,12 @@
 #!/bin/bash
 
+echo "Checking variables"
+echo $TRAVIS
+echo $TRAVIS_TAG
+echo $TRAVIS_BRANCH
+echo $TRAVIS_PULL_REQUEST_BRANCH
+echo $TRAVIS_PULL_REQUEST
+
 # Checks if the tag script is being run on TravisCI
 if [ ! $TRAVIS ]; then
     echo "Script needs to be run on TravisCI platform"
@@ -13,13 +20,13 @@ if [ ! -z "$TRAVIS_TAG" ]; then
 fi
 
 # Checks if the build was triggered Pull Request.
-if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-    echo "Run in a Pull Request"
-    exit 1
-fi
+#if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ ! "$TRAVIS_PULL_REQUEST_BRANCH" = "master" ]; then
+#    echo "Run in a Pull Request"
+#    exit 1
+#fi
 
 # Checks if the build is on the master branch.
-if [ "$TRAVIS_BRANCH" == "master" ]; then
+if [ ! "$TRAVIS_BRANCH" == "master" ] || [ ! "$TRAVIS_PULL_REQUEST_BRANCH" == "master" ]; then
     echo "Build is not in the master branch"
     exit 1
 fi
