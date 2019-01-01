@@ -14,7 +14,7 @@ if [ $TRAVIS ]; then
             export GIT_TAG=`cat VERSION.txt`
             git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
             echo `git show origin`
-            git push -q https://$GITHUB_OAUTH_TOKEN@github.com/cameronnewman/go-emailvalidation --tag > /dev/null 2>&1
+            git push -q https://$GITHUB_OAUTH_TOKEN@github.com/$TRAVIS_REPO_SLUG --tag > /dev/null 2>&1
 
         fi
 
