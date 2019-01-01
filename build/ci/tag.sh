@@ -4,7 +4,7 @@ echo $TRAVIS_BRANCH
 
 if [ $TRAVIS ]; then
 
-    if [-z "$TRAVIS_TAG" ]; then
+    if [[ -z "$TRAVIS_TAG" ]]; then
 
         if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
 
