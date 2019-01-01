@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo $TRAVIS_BRANCH
-
 if [ $TRAVIS ]; then
 
     if [[ -z "$TRAVIS_TAG" ]]; then
