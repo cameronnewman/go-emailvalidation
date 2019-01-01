@@ -9,7 +9,7 @@ PWD					:= $(shell pwd)
 tests:
 	@echo "Running Tests"
 
-	docker run --rm -t -v $(PWD):/go/src -w /go/src $(BUILD_IMAGE) go test -cover -v $(go list ./... | grep -v /example/)
+	docker run --rm -t -v $(PWD):/go/src -w /go/src $(BUILD_IMAGE) go test -cover -v $(shell go list ./... | grep -v /example/)
 	@echo "Completed tests"
 
 
