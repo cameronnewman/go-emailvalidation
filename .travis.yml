@@ -1,4 +1,4 @@
-lanuage: generic
+lanuage: minimal
 sudo: false
 ignore:
   - examples/*
