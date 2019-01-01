@@ -26,10 +26,13 @@ fi
 #fi
 
 # Checks if the build is on the master branch.
-if [ ! "$TRAVIS_BRANCH" == "master" ] || [ ! "$TRAVIS_PULL_REQUEST_BRANCH" == "master" ]; then
-    echo "Build is not in the master branch"
-    exit 1
+if [ ! -z "$TRAVIS_PULL_REQUEST_BRANCH" ] && [ $TRAVIS_PULL_REQUEST == false]; then
+    if [ ! "$TRAVIS_BRANCH" == "master" ] || [ ! "$TRAVIS_PULL_REQUEST_BRANCH" == "master" ]; then
+        echo "Build is not in the master branch"
+        exit 1
+    fi
 fi
+
 
 # Checks if the VERSION file exists from the makefile
 if [ ! -f VERSION.txt ]; then
