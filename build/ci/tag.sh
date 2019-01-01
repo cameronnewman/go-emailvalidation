@@ -41,6 +41,12 @@ if [ ! -f VERSION.txt ]; then
     exit 2
 fi
 
+# Checks if the Github OAuth Token was set.
+if [ -z "$GITHUB_OAUTH_TOKEN" ]; then
+    echo "The GITHUB_OAUTH_TOKEN has not been set"
+    exit 2
+fi
+
 export GIT_TAG=`cat VERSION.txt`
 
 echo "Tagging release version $GIT_TAG"
