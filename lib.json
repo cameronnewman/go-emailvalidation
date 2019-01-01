@@ -1,0 +1,11 @@
+{
+    "lib": {
+      "name": "go-emailvalidation",
+      "description": "Simple lambda go template",
+      "version": {
+        "major": "1",
+        "minor": "0"
+      }
+    }
+  }
+  
