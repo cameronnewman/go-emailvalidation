@@ -9,7 +9,7 @@ echo $TRAVIS_PULL_REQUEST
 
 # Checks if the tag script is being run on TravisCI
 if [ ! $TRAVIS ]; then
-    echo "Script needs to be run on TravisCI platform"
+    echo "This script needs to be run on TravisCI platform"
     exit 1
 fi
 
@@ -19,8 +19,8 @@ if [ ! -z "$TRAVIS_TAG" ]; then
     exit 1
 fi
 
-if [ "$TRAVIS_PULL_REQUEST" -eq "$TRAVIS_PULL_REQUEST" 2>/dev/null ]; then 
-    echo "Build is not in the master branch"
+if [ "$TRAVIS_PULL_REQUEST" -eq "$TRAVIS_PULL_REQUEST" 2>/dev/null ] || [[ "$TRAVIS_PULL_REQUEST" =~ ^[0-9]+$ ]]; then 
+    echo "This build was triggered by a Pull Request (PR)"
     exit 1 
 fi 
 
@@ -31,7 +31,7 @@ fi
 #fi
 
 if [ ! "$TRAVIS_BRANCH" == "master" ] && [ -z "$TRAVIS_PULL_REQUEST_BRANCH" ]; then
-    echo "Build is not in the master branch"
+    echo "This build is not in the master branch"
     exit 1
 fi
 
