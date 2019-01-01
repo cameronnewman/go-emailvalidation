@@ -22,7 +22,8 @@ if [ $TRAVIS ]; then
         exit 1
     fi
 
-    echo "Not run in a PR"
+    echo "Run in a Pull Request"
+    exit 1
 fi
 echo "Script hasn't been run on TravisCI platform"
 exit 1
