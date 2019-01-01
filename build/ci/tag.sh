@@ -15,9 +15,14 @@ fi
 
 # Checks if the build was triggered by a tag commit.
 if [ ! -z "$TRAVIS_TAG" ]; then
-    echo "Tag build"
+    echo "This build was triggered by a git tag push"
     exit 1
 fi
+
+if [ "$TRAVIS_PULL_REQUEST" -eq "$TRAVIS_PULL_REQUEST" 2>/dev/null ]; then 
+    echo "Build is not in the master branch"
+    exit 1 
+fi 
 
 # Checks if the build was triggered Pull Request.
 #if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ ! "$TRAVIS_PULL_REQUEST_BRANCH" = "master" ]; then
@@ -25,14 +30,10 @@ fi
 #    exit 1
 #fi
 
-# Checks if the build is on the master branch.
-if [ ! -z "$TRAVIS_PULL_REQUEST_BRANCH" ] && [ $TRAVIS_PULL_REQUEST == false]; then
-    if [ ! "$TRAVIS_BRANCH" == "master" ] || [ ! "$TRAVIS_PULL_REQUEST_BRANCH" == "master" ]; then
-        echo "Build is not in the master branch"
-        exit 1
-    fi
+if [ ! "$TRAVIS_BRANCH" == "master" ] && [ -z "$TRAVIS_PULL_REQUEST_BRANCH" ]; then
+    echo "Build is not in the master branch"
+    exit 1
 fi
-
 
 # Checks if the VERSION file exists from the makefile
 if [ ! -f VERSION.txt ]; then
