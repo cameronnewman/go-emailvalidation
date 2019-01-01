@@ -1,5 +1,5 @@
 /*
-Package email is an Golang email validation. You can valid email address formats as well as the domain/MX records
+Package email is a imple email validation package. Package valids email address string to RFC requirements and performs a DNS lookup for the MX records using the local DNS settings.
 */
 package email
 
