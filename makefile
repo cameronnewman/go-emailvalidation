@@ -11,13 +11,13 @@ PWD					:= $(shell pwd)
 
 .DEFAULT_GOAL := test
 
-.PHONY: setup
-setup:
+.PHONY: version
+version:
 	@echo "Setting build to Version: v$(VERSION)" 
 	$(shell echo v$(VERSION) > VERSION.txt)
 
 .PHONY: test
-test: setup
+test: version
 	@echo "Running Tests"
 
 	docker run -e GO111MODULE=auto --rm -t -v $(PWD):/usr/src/myapp -w /usr/src/myapp $(BUILD_IMAGE) sh -c "go test -cover -v ./... -count=1"
