@@ -2,7 +2,7 @@
 
 if [ $TRAVIS ]; then
 
-    if [ !$TRAVIS_PULL_REQUEST]; then
+    if ! [ $TRAVIS_PULL_REQUEST ]; then
 
         if [ $TRAVIS_BRANCH == "master" ]; then
 
@@ -25,5 +25,5 @@ if [ $TRAVIS ]; then
     echo "Run in a Pull Request"
     exit 1
 fi
-echo "Script hasn't been run on TravisCI platform"
+echo "Script needs to be run on TravisCI platform"
 exit 1
