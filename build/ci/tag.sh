@@ -18,8 +18,13 @@ fi
 #    exit 1
 #fi
 
+echo "Checking variables"
+echo $TRAVIS_BRANCH
+echo $TRAVIS_PULL_REQUEST_BRANCH
+echo $TRAVIS_PULL_REQUEST
+
 # Checks if the build is on the master branch.
-if [ ! "$TRAVIS_BRANCH" == "master" ] && [ ! "$TRAVIS_PULL_REQUEST_BRANCH" == "master" ]; then
+if [ ! "$TRAVIS_BRANCH" == "master" ] || [ ! "$TRAVIS_PULL_REQUEST_BRANCH" == "master" ]; then
     echo "Build is not in the master branch"
     exit 1
 fi
