@@ -2,7 +2,8 @@
 
 ## Purpose ##
 
-Simple Email Validation package.
+Simple email validation package. Package valids email address string to RFC requirements and performs a DNS lookup for the MX records using the local DNS settings.
+
 
 [![GoDoc][1]][2]
 [![GoCard][3]][4]

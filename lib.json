@@ -1,7 +1,7 @@
 {
     "lib": {
       "name": "go-emailvalidation",
-      "description": "Simple lambda go template",
+      "description": "Simple email validation package. Package valids email address string to RFC requirements and performs a DNS lookup for the MX records using the local DNS settings.",
       "version": {
         "major": "1",
         "minor": "0"
