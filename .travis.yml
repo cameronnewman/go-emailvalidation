@@ -18,3 +18,4 @@ script: make
 
 after_success:
   - ./build/ci/tag.sh
+  - ./build/ci/coverage.sh
