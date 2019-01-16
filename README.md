@@ -4,6 +4,7 @@
 [![GoCard][3]][4]
 [![Build][5]][6]
 [![codecov][7]][8]
+[![FOSSA Status][9]][10]
 
 [1]: https://godoc.org/github.com/cameronnewman/go-emailvalidation?status.svg
 [2]: https://godoc.org/github.com/cameronnewman/go-emailvalidation
@@ -13,6 +14,8 @@
 [6]: https://travis-ci.org/cameronnewman/go-emailvalidation
 [7]: https://codecov.io/gh/cameronnewman/go-emailvalidation/branch/master/graph/badge.svg
 [8]: https://codecov.io/gh/cameronnewman/go-emailvalidation
+[9]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcameronnewman%2Fgo-emailvalidation.svg?type=shield
+[10]: https://app.fossa.io/projects/git%2Bgithub.com%2Fcameronnewman%2Fgo-emailvalidation?ref=badge_shield
 
 
 ## Purpose ##
