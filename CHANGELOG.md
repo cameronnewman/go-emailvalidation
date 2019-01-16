@@ -2,13 +2,18 @@ CHANGELOG
 =========
 
 
+v1.1.122
+
+### Improvements
+
+- Added changelog
+
 v1.1.117
 ------
 
 ### Improvements
 
 - Updated the readme to include license details
-
 
 v1.1.113
 ------
