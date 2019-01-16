@@ -26,14 +26,13 @@ func (e *Validation) ValidateEmailAddress(email string) error {
 	if err != nil {
 		return err
 	}
-	return nil
-
 	_, domain := e.SplitEmailAddress(email)
 
 	err = e.ValidateDomainMailRecords(domain)
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
