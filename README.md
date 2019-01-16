@@ -59,3 +59,6 @@ func main() {
 
 ## Issues
 * None
+
+## License
+MIT Licensed
