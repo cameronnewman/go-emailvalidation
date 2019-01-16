@@ -42,7 +42,7 @@ func TestEmailValidation_ValidateEmailAddress(t *testing.T) {
 			"InvalidEmailAddress/Domain",
 			New(),
 			args{
-				email: "john.snow&@gggggggmmmmaaaiiilllll.com",
+				email: "john.snow&@gggggggmmmmaaaiizilllll.com",
 			},
 			true,
 		},
@@ -52,6 +52,99 @@ func TestEmailValidation_ValidateEmailAddress(t *testing.T) {
 			e := &Validation{}
 			if err := e.ValidateEmailAddress(tt.args.email); (err != nil) != tt.wantErr {
 				t.Errorf("Validation.ValidateEmailAddress() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestEmailValidation_ValidateFormat(t *testing.T) {
+	type args struct {
+		email string
+	}
+	tests := []struct {
+		name    string
+		e       *Validation
+		args    args
+		wantErr bool
+	}{
+		{
+			"ValidEmailAddressDot",
+			New(),
+			args{
+				email: "john.snow@gmail.com",
+			},
+			false,
+		},
+		{
+			"ValidEmailAddressUnderscore",
+			New(),
+			args{
+				email: "john_snow@gmail.com",
+			},
+			false,
+		},
+		{
+			"ValidEmailAddressCase",
+			New(),
+			args{
+				email: "JohnSnow@Gmail.com",
+			},
+			false,
+		},
+		{
+			"ValidEmailAddressDomainDash",
+			New(),
+			args{
+				email: "JohnSnow@g-mail.com",
+			},
+			false,
+		},
+		{
+			"InvalidEmailAddressDomainUnderScore",
+			New(),
+			args{
+				email: "JohnSnow@g_mail.com",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddressDomainUnderScore",
+			New(),
+			args{
+				email: "JohnSnow@G_mAil.com",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/Format",
+			New(),
+			args{
+				email: "john.snow()()()@gmail.com",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/Format",
+			New(),
+			args{
+				email: "john.snow(*&(&*))@gmail.com",
+			},
+			true,
+		},
+		{
+			"ValidEmailAddress/InvalidDomain",
+			New(),
+			args{
+				email: "john.snow@gggggggmmmmaaaiizilllll.com",
+			},
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			e := &Validation{}
+			if err := e.ValidateFormat(tt.args.email); (err != nil) != tt.wantErr {
+				t.Errorf("Validation.ValidateFormat() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
