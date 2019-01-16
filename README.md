@@ -4,6 +4,7 @@
 [![GoCard][3]][4]
 [![Build][5]][6]
 [![codecov][7]][8]
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcameronnewman%2Fgo-emailvalidation.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcameronnewman%2Fgo-emailvalidation?ref=badge_shield)
 
 [1]: https://godoc.org/github.com/cameronnewman/go-emailvalidation?status.svg
 [2]: https://godoc.org/github.com/cameronnewman/go-emailvalidation
@@ -62,3 +63,5 @@ func main() {
 
 ## License
 MIT Licensed
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcameronnewman%2Fgo-emailvalidation.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcameronnewman%2Fgo-emailvalidation?ref=badge_large)
