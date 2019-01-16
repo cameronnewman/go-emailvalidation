@@ -1,19 +1,12 @@
 package email
 
 import (
-	"errors"
 	"net"
 	"regexp"
 	"strings"
 )
 
 var (
-	//ErrEmailInvalidFormat is an error generatd when the format is incorrect
-	ErrEmailInvalidFormat = errors.New("Invalid email format")
-
-	//ErrEmailInvalidDomain is an error generatd when the domain is invalid or no MX reocrds can be found
-	ErrEmailInvalidDomain = errors.New("Invalid email domain OR MX records don't exist")
-
 	emailRegexp = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 )
 
@@ -26,18 +19,28 @@ func New() *Validation {
 	return &Validation{}
 }
 
-//ValidateEmailAddress - validates and email address via a regix and then a DNS lookup for MX records
+//ValidateEmailAddress - validates an email address via all methods
 func (e *Validation) ValidateEmailAddress(email string) error {
 
-	if !emailRegexp.MatchString(email) {
-		return ErrEmailInvalidFormat
+	err := e.ValidateFormat(email)
+	if err != nil {
+		return err
 	}
+	return nil
 
 	_, domain := e.SplitEmailAddress(email)
 
-	err := e.ValidateDomainMailRecords(domain)
+	err = e.ValidateDomainMailRecords(domain)
 	if err != nil {
 		return err
+	}
+	return nil
+}
+
+//ValidateFormat - validates an email address meets rfc 822 format via a regex
+func (e *Validation) ValidateFormat(email string) error {
+	if !emailRegexp.MatchString(email) {
+		return ErrEmailInvalidFormat
 	}
 	return nil
 }
@@ -52,7 +55,7 @@ func (e *Validation) ValidateDomainMailRecords(domain string) error {
 	return nil
 }
 
-//SplitEmailAddress - Splits an email address into a prefix and domains
+//SplitEmailAddress - Splits an email address into a prefix and domain
 func (e *Validation) SplitEmailAddress(email string) (username, domain string) {
 
 	components := strings.Split(email, "@")
