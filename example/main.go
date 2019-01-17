@@ -10,7 +10,8 @@ func main() {
 
 	emailaddress := "John.Snow@gmaiiiiiiillllll.com"
 
-	// Run all checks, including validating the format along with DNS lookups which may be slower depending on your DNS server performance
+	// Run all checks, including validating the format along with DNS lookups which
+	// may be slower depending on your DNS server performance
 	err := email.Validate(emailaddress)
 	if err != nil {
 		fmt.Println(err)
