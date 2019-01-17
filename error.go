@@ -5,9 +5,12 @@ import (
 )
 
 var (
-	//ErrEmailInvalidFormat is an error generatd when the format is incorrect
-	ErrEmailInvalidFormat = errors.New("Invalid email format")
+	//ErrInvalidFormat is an error generatd when the format is incorrect
+	ErrInvalidFormat = errors.New("Invalid email format")
 
-	//ErrEmailInvalidDomain is an error generatd when the domain is invalid or no MX reocrds can be found
-	ErrEmailInvalidDomain = errors.New("Invalid email domain OR MX records don't exist")
+	//ErrInvalidDomainNoNameServers is an error generatd when the domain returns no Name Server reocrds
+	ErrInvalidDomainNoNameServers = errors.New("Invalid email domain, unable to find Name Servers records")
+
+	//ErrInvalidDomainNoMXRecords is an error generatd when the domain returns no MX reocrds
+	ErrInvalidDomainNoMXRecords = errors.New("Invalid email domain no MX records found")
 )

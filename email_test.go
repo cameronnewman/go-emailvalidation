@@ -4,43 +4,150 @@ import (
 	"testing"
 )
 
-func TestEmailValidation_ValidateEmailAddress(t *testing.T) {
+func TestValidate(t *testing.T) {
 	type args struct {
 		email string
 	}
 	tests := []struct {
 		name    string
-		e       *Validation
 		args    args
 		wantErr bool
 	}{
 		{
-			"ValidEmailAddress",
-			New(),
+			"ValidEmailAddress/PrefixDot",
 			args{
 				email: "john.snow@gmail.com",
 			},
 			false,
 		},
 		{
-			"InvalidEmailAddress/Format",
-			New(),
+			"ValidEmailAddress/PrefixUnderscore",
+			args{
+				email: "john_snow@gmail.com",
+			},
+			false,
+		},
+		{
+			"ValidEmailAddress/AddressCase",
+			args{
+				email: "JohnSnow@Gmail.com",
+			},
+			false,
+		},
+		{
+			"ValidEmailAddress/DomainDash",
+			args{
+				email: "JohnSnow@g-mail.com",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/DomainUnderscore",
+			args{
+				email: "JohnSnow@g_mail.com",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/DomainCaseUnderscore",
+			args{
+				email: "JohnSnow@G_mAil.com",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/PrefixBrackets",
 			args{
 				email: "john.snow()()()@gmail.com",
 			},
 			true,
 		},
 		{
-			"InvalidEmailAddress/Format",
-			New(),
+			"InvalidEmailAddress/TooShort",
+			args{
+				email: "j@g.i",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/TooLong",
+			args{
+				email: "jasdkjhasdkjhasdkjhasdkhasdkhaskdhasdkjhasdkjhasdkhasdkhaskdhasdkjhasdkjhasdkjasdkjhasdkjhasdkjhasdkhasdkhaskdhasdkjhasdkjhasdkhasdkhaskdhasdkjhasdkjhasdkhasdkhaskdhasdkjhasdkjhasdkhasdkhaskdhahasdkhaskdhasdkjhasdkjhasdkhasdkhaskdha@gasdkjhaskdhaskdhaksdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdhkasdhkashdkasjhdkasjdhkashd.isadhaskdhaskdhaksjdh",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/UsernameTooLongDomainOk",
+			args{
+				email: "sgafetdgetsgdhstegdtsheduejdiekdjsyehrjehdusjegdtsgetsfgedswedtgd@gmail.com",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/PrefixAmpersandStar",
 			args{
 				email: "john.snow(*&(&*))@gmail.com",
 			},
 			true,
 		},
 		{
-			"InvalidEmailAddress/Domain",
-			New(),
+			"ValidEmailAddress/InvalidDomain",
+			args{
+				email: "john.snow@gggggggmmmmaaaiizilllll.com",
+			},
+			true,
+		},
+		{
+			"ValidEmailAddress/PrefixAmpersandInvalidDomain",
+			args{
+				email: "john.snow&@gggggggmmmmaaaiizilllll.com",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/NoPrefix",
+			args{
+				email: "@gmail.com",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/NoPrefixDoubleDomain",
+			args{
+				email: "@gmail.com@gmail.com",
+			},
+			true,
+		},
+		{
+			"ValidDomain",
+			args{
+				email: "justin@gmail.com",
+			},
+			false,
+		},
+		{
+			"InvalidEmailAddress/NoAt",
+			args{
+				email: "john.snow_gmail.com",
+			},
+			true,
+		},
+		{
+			"InvalidDomain/NonExistantDomain",
+			args{
+				email: "justin@gggggggmmmmaaaiiilllll.com",
+			},
+			true,
+		},
+		{
+			"InvalidDomain/NoMailRecords",
+			args{
+				email: "justin@support.google.com",
+			},
+			true,
+		},
+		{
+			"InvalidDomain/NonExistantDomain",
 			args{
 				email: "john.snow&@gggggggmmmmaaaiizilllll.com",
 			},
@@ -49,83 +156,94 @@ func TestEmailValidation_ValidateEmailAddress(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			e := &Validation{}
-			if err := e.ValidateEmailAddress(tt.args.email); (err != nil) != tt.wantErr {
-				t.Errorf("Validation.ValidateEmailAddress() error = %v, wantErr %v", err, tt.wantErr)
+			if err := Validate(tt.args.email); (err != nil) != tt.wantErr {
+				t.Errorf("email.Validate() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
 }
 
-func TestEmailValidation_ValidateFormat(t *testing.T) {
+func TestValidateFormat(t *testing.T) {
 	type args struct {
 		email string
 	}
 	tests := []struct {
 		name    string
-		e       *Validation
 		args    args
 		wantErr bool
 	}{
 		{
-			"ValidEmailAddressDot",
-			New(),
+			"ValidEmailAddress/PrefixDot",
 			args{
 				email: "john.snow@gmail.com",
 			},
 			false,
 		},
 		{
-			"ValidEmailAddressUnderscore",
-			New(),
+			"ValidEmailAddress/PrefixUnderscore",
 			args{
 				email: "john_snow@gmail.com",
 			},
 			false,
 		},
 		{
-			"ValidEmailAddressCase",
-			New(),
+			"ValidEmailAddress/AddressCase",
 			args{
 				email: "JohnSnow@Gmail.com",
 			},
 			false,
 		},
 		{
-			"ValidEmailAddressDomainDash",
-			New(),
+			"ValidEmailAddress/DomainDash",
 			args{
 				email: "JohnSnow@g-mail.com",
 			},
 			false,
 		},
 		{
-			"InvalidEmailAddressDomainUnderScore",
-			New(),
+			"ValidEmailAddress/DomainNoMXbutA",
+			args{
+				email: "JohnSnow@support.google.com",
+			},
+			false,
+		},
+		{
+			"InvalidEmailAddress/DomainUnderscore",
 			args{
 				email: "JohnSnow@g_mail.com",
 			},
 			true,
 		},
 		{
-			"InvalidEmailAddressDomainUnderScore",
-			New(),
+			"InvalidEmailAddress/DomainCaseUnderscore",
 			args{
 				email: "JohnSnow@G_mAil.com",
 			},
 			true,
 		},
 		{
-			"InvalidEmailAddress/Format",
-			New(),
+			"InvalidEmailAddress/PrefixBrackets",
 			args{
 				email: "john.snow()()()@gmail.com",
 			},
 			true,
 		},
 		{
-			"InvalidEmailAddress/Format",
-			New(),
+			"InvalidEmailAddress/TooShort",
+			args{
+				email: "j@g.i",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/TooLong",
+			args{
+				email: "jasdkjhasdkjhasdkjhasdkhasdkhaskdhasdkjhasdkjhasdkhasdkhaskdhasdkjhasdkjhasdkjasdkjhasdkjhasdkjhasdkhasdkhaskdhasdkjhasdkjhasdkhasdkhaskdhasdkjhasdkjhasdkhasdkhaskdhasdkjhasdkjhasdkhasdkhaskdhahasdkhaskdhasdkjhasdkjhasdkhasdkhaskdha@gasdkjhaskdhaskdhaksdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdgasdkjhaskdhaskdhaksdhkasdhkashdkasjhdkasjdhkashdhkasdhkashdkasjhdkasjdhkashd.isadhaskdhaskdhaksjdh",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/PrefixAmpersandStar",
 			args{
 				email: "john.snow(*&(&*))@gmail.com",
 			},
@@ -133,82 +251,115 @@ func TestEmailValidation_ValidateFormat(t *testing.T) {
 		},
 		{
 			"ValidEmailAddress/InvalidDomain",
-			New(),
 			args{
 				email: "john.snow@gggggggmmmmaaaiizilllll.com",
 			},
 			false,
 		},
+		{
+			"ValidEmailAddress/PrefixAmpersandInvalidDomain",
+			args{
+				email: "john.snow&@gggggggmmmmaaaiizilllll.com",
+			},
+			false,
+		},
+		{
+			"InvalidEmailAddress/NoPrefix",
+			args{
+				email: "@gmail.com",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/NoPrefixDoubleDomain",
+			args{
+				email: "@gmail.com@gmail.com",
+			},
+			true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			e := &Validation{}
-			if err := e.ValidateFormat(tt.args.email); (err != nil) != tt.wantErr {
-				t.Errorf("Validation.ValidateFormat() error = %v, wantErr %v", err, tt.wantErr)
+			if err := ValidateFormat(tt.args.email); (err != nil) != tt.wantErr {
+				t.Errorf("email.ValidateFormat() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
 }
 
-func TestEmailValidation_ValidateDomainMailRecords(t *testing.T) {
+func TestValidateDomainRecords(t *testing.T) {
 	type args struct {
-		domain string
+		email string
 	}
 	tests := []struct {
 		name    string
-		e       *Validation
 		args    args
 		wantErr bool
 	}{
 		{
 			"ValidDomain",
-			New(),
 			args{
-				domain: "gmail.com",
+				email: "justin@gmail.com",
 			},
 			false,
 		},
 		{
-			"InvalidDomain/NonExistantDomain",
-			New(),
+			"InvalidEmailAddress/NoAt",
 			args{
-				domain: "gggggggmmmmaaaiiilllll.com",
+				email: "john.snow_gmail.com",
+			},
+			true,
+		},
+		{
+			"ValidEmailAddress/DomainNoMXbutA",
+			args{
+				email: "JohnSnow@support.google.com",
+			},
+			true,
+		},
+		{
+			"InvalidDomain/NonExistantDomain",
+			args{
+				email: "justin@gggggggmmmmaaaiiilllll.com",
 			},
 			true,
 		},
 		{
 			"InvalidDomain/NoMailRecords",
-			New(),
 			args{
-				domain: "support.google.com",
+				email: "justin@support.google.com",
+			},
+			true,
+		},
+		{
+			"InvalidDomain/NonExistantDomain",
+			args{
+				email: "john.snow&@gggggggmmmmaaaiizilllll.com",
 			},
 			true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			e := &Validation{}
-			if err := e.ValidateDomainMailRecords(tt.args.domain); (err != nil) != tt.wantErr {
-				t.Errorf("Validation.ValidateDomainMailRecords() error = %v, wantErr %v", err, tt.wantErr)
+			if err := ValidateDomainRecords(tt.args.email); (err != nil) != tt.wantErr {
+				t.Errorf("email.ValidateDomainMailRecords() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
 }
 
-func TestEmailValidation_SplitEmailAddress(t *testing.T) {
+func TestSplit(t *testing.T) {
 	type args struct {
 		email string
 	}
 	tests := []struct {
 		name         string
-		e            *Validation
 		args         args
 		wantUsername string
 		wantDomain   string
 	}{
 		{
 			"ValidEmailAddress",
-			New(),
 			args{
 				email: "john.snow@gmail.com",
 			},
@@ -216,8 +367,7 @@ func TestEmailValidation_SplitEmailAddress(t *testing.T) {
 			"gmail.com",
 		},
 		{
-			"InValidEmailAddress",
-			New(),
+			"InvalidEmailAddress/NoAt",
 			args{
 				email: "john.snow_gmail.com",
 			},
@@ -225,10 +375,25 @@ func TestEmailValidation_SplitEmailAddress(t *testing.T) {
 			"",
 		},
 		{
-			"InValidEmailAddress",
-			New(),
+			"InvalidEmailAddress/TwoAtSymbols",
 			args{
 				email: "john.snow@@gmail.com",
+			},
+			"",
+			"",
+		},
+		{
+			"InvalidEmailAddress/NoPrefix",
+			args{
+				email: "@gmail.com",
+			},
+			"",
+			"",
+		},
+		{
+			"InvalidEmailAddress/NoPrefix",
+			args{
+				email: "@gmail.com@gmail.com",
 			},
 			"",
 			"",
@@ -236,13 +401,67 @@ func TestEmailValidation_SplitEmailAddress(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			e := &Validation{}
-			gotUsername, gotDomain := e.SplitEmailAddress(tt.args.email)
+			gotUsername, gotDomain := Split(tt.args.email)
 			if gotUsername != tt.wantUsername {
-				t.Errorf("Validation.SplitEmailAddress() gotUsername = %v, want %v", gotUsername, tt.wantUsername)
+				t.Errorf("email.SplitEmailAddress() gotUsername = %v, want %v", gotUsername, tt.wantUsername)
 			}
 			if gotDomain != tt.wantDomain {
-				t.Errorf("Validation.SplitEmailAddress() gotDomain = %v, want %v", gotDomain, tt.wantDomain)
+				t.Errorf("email.SplitEmailAddress() gotDomain = %v, want %v", gotDomain, tt.wantDomain)
+			}
+		})
+	}
+}
+
+func TestNormalize(t *testing.T) {
+	type args struct {
+		email string
+	}
+	tests := []struct {
+		name      string
+		args      args
+		wantEmail string
+	}{
+		{
+			"ValidEmailAddress/NoChanges",
+			args{
+				email: "john.snow@gmail.com",
+			},
+			"john.snow@gmail.com",
+		},
+		{
+			"InvalidEmailAddress/NoChanges",
+			args{
+				email: "john.snow_gmail.com",
+			},
+			"john.snow_gmail.com",
+		},
+		{
+			"ValidEmailAddress/RemoveWhiteSpace",
+			args{
+				email: " john.snow@gmail.com ",
+			},
+			"john.snow@gmail.com",
+		},
+		{
+			"ValidEmailAddress/RemoveDomainDot",
+			args{
+				email: "john.snow@ns.gmail.com.",
+			},
+			"john.snow@ns.gmail.com",
+		},
+		{
+			"ValidEmailAddress/SetToLowercase",
+			args{
+				email: "johN.Snow@Gmail.com.",
+			},
+			"john.snow@gmail.com",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotEmail := Normalize(tt.args.email)
+			if gotEmail != tt.wantEmail {
+				t.Errorf("email.Normalize() gotEmail = %v, want %v", gotEmail, tt.wantEmail)
 			}
 		})
 	}

@@ -6,29 +6,23 @@ import (
 	"strings"
 )
 
+const (
+	emptyString string = ""
+)
+
 var (
 	emailRegexp = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 )
 
-//Validation struct
-type Validation struct {
-}
+//Validate - validates an email address via all options
+func Validate(email string) error {
 
-//New returns a new Validation struct
-func New() *Validation {
-	return &Validation{}
-}
-
-//ValidateEmailAddress - validates an email address via all methods
-func (e *Validation) ValidateEmailAddress(email string) error {
-
-	err := e.ValidateFormat(email)
+	err := ValidateFormat(email)
 	if err != nil {
 		return err
 	}
-	_, domain := e.SplitEmailAddress(email)
 
-	err = e.ValidateDomainMailRecords(domain)
+	err = ValidateDomainRecords(email)
 	if err != nil {
 		return err
 	}
@@ -37,31 +31,76 @@ func (e *Validation) ValidateEmailAddress(email string) error {
 }
 
 //ValidateFormat - validates an email address meets rfc 822 format via a regex
-func (e *Validation) ValidateFormat(email string) error {
-	if !emailRegexp.MatchString(email) {
-		return ErrEmailInvalidFormat
-	}
-	return nil
-}
+func ValidateFormat(email string) error {
 
-//ValidateDomainMailRecords - validates a domain MX records via a DNS lookup
-func (e *Validation) ValidateDomainMailRecords(domain string) error {
-
-	_, err := net.LookupMX(domain)
+	_, _, err := validateFormatAndSplit(email)
 	if err != nil {
-		return ErrEmailInvalidDomain
+		return err
 	}
+
 	return nil
 }
 
-//SplitEmailAddress - Splits an email address into a prefix and domain
-func (e *Validation) SplitEmailAddress(email string) (username, domain string) {
+//ValidateDomainRecords - validates an email address domain's NS and MX records via a DNS lookup
+func ValidateDomainRecords(email string) error {
 
-	components := strings.Split(email, "@")
-	if len(components) == 2 {
-		username, domain := components[0], components[1]
-		return username, domain
+	_, domain, err := validateFormatAndSplit(email)
+	if err != nil {
+		return ErrInvalidFormat
 	}
 
-	return
+	// Added NS check as some ISPs hijack the MX record lookup :(
+	nsRecords, err := net.LookupNS(domain)
+	if err != nil || len(nsRecords) == 0 {
+		return ErrInvalidDomainNoNameServers
+	}
+
+	if _, err := net.LookupMX(domain); err != nil {
+		if _, err := net.LookupIP(domain); err != nil {
+			return ErrInvalidDomainNoMXRecords
+		}
+	}
+
+	return nil
+}
+
+//Split - Splits an email address into a username prefix and domain
+func Split(email string) (username string, domain string) {
+
+	username, domain, err := validateFormatAndSplit(email)
+	if err != nil {
+		return emptyString, emptyString
+	}
+
+	return username, domain
+}
+
+// Normalize - Trim whitespaces, extra dots in the hostname and converts to Lowercase.
+func Normalize(email string) string {
+
+	email = strings.TrimSpace(email)
+	email = strings.TrimRight(email, ".")
+	email = strings.ToLower(email)
+
+	return email
+}
+
+func validateFormatAndSplit(email string) (username string, domain string, err error) {
+	if len(email) < 6 || len(email) > 254 {
+		return emptyString, emptyString, ErrInvalidFormat
+	}
+
+	if !emailRegexp.MatchString(email) {
+		return emptyString, emptyString, ErrInvalidFormat
+	}
+
+	i := strings.LastIndexByte(email, '@')
+	username = email[:i]
+	domain = email[i+1:]
+
+	if len(username) > 64 {
+		return emptyString, emptyString, ErrInvalidFormat
+	}
+
+	return username, domain, nil
 }

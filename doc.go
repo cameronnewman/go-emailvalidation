@@ -5,10 +5,9 @@ package email
 
 // Simple example:
 //
-// 	fmt.Println("Hello")
 //	emailaddress := "john.snow@gmaiiiiiiillllll.com"
 //
-//	err := email.New().ValidateEmailAddress(emailaddress)
+//	err := email.Validate(emailaddress)
 //	if err != nil {
 //		fmt.Println(err)
 //	}
