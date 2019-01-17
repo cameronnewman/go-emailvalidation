@@ -1,6 +1,23 @@
 CHANGELOG
 =========
 
+v2.0.131
+
+### New Features
+
+- simpleted all functions
+- added Normalize function
+
+### Improvements
+
+- Massively improved all unit tests
+- Updated the docs/readme/example
+
+v1.1.127
+
+### Improvements
+
+- Added FOSSA license check
 
 v1.1.122
 
