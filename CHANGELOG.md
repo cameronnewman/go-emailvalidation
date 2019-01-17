@@ -1,7 +1,15 @@
 CHANGELOG
 =========
 
+v2.1.144
+------
+
+### Improvements
+
+- Removed double function call
+
 v2.0.131
+------
 
 ### New Features
 
@@ -14,12 +22,14 @@ v2.0.131
 - Updated the docs/readme/example
 
 v1.1.127
+------
 
 ### Improvements
 
 - Added FOSSA license check
 
 v1.1.122
+------
 
 ### Improvements
 
