@@ -17,12 +17,7 @@ var (
 //Validate - validates an email address via all options
 func Validate(email string) error {
 
-	err := ValidateFormat(email)
-	if err != nil {
-		return err
-	}
-
-	err = ValidateDomainRecords(email)
+	err := ValidateDomainRecords(email)
 	if err != nil {
 		return err
 	}
@@ -46,7 +41,7 @@ func ValidateDomainRecords(email string) error {
 
 	_, domain, err := validateFormatAndSplit(email)
 	if err != nil {
-		return ErrInvalidFormat
+		return err
 	}
 
 	// Added NS check as some ISPs hijack the MX record lookup :(
