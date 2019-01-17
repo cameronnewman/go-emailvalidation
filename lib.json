@@ -4,7 +4,7 @@
       "description": "Simple email validation package. Package valids email address string to RFC requirements and performs a DNS lookup for the NS & MX records using the local DNS settings.",
       "version": {
         "major": "2",
-        "minor": "0"
+        "minor": "1"
       }
     }
   }
