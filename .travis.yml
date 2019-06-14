@@ -17,5 +17,5 @@ services:
 script: make
 
 after_success:
-  - ./build/ci/tag.sh
-  - ./build/ci/coverage.sh
+  - ./scripts/ci/tag.sh
+  - ./scripts/ci/coverage.sh
