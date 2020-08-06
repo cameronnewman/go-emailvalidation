@@ -1,12 +1,13 @@
 CHANGELOG
 =========
 
-v2.3.26
+v2.3
 ------
 
 ### Improvements
 
 - Switched to Github Actions and removed TravisCI
+- Fixed shell lint errors
 
 v2.1.144
 ------
