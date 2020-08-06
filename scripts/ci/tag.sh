@@ -1,11 +1,11 @@
 #!/bin/bash
 
 echo "Checking variables"
-echo GITHUB_ACTIONS: $GITHUB_ACTIONS
-echo GITHUB_REF: $GITHUB_REF
+echo "GITHUB_ACTIONS: $GITHUB_ACTIONS"
+echo "GITHUB_REF: $GITHUB_REF"
 
 # Checks if the tag script is being run on Github Actions
-if [ ! $GITHUB_ACTIONS ]; then
+if [ ! "$GITHUB_ACTIONS" ]; then
     echo "This script needs to be run on Github Actions platform"
     exit 1
 fi
@@ -30,7 +30,6 @@ fi
 export GIT_TAG=`cat BUILD_VERSION.txt`
 
 echo "Tagging release version $GIT_TAG"
-echo $GITHUB_REF
 
 git config --global user.email "builds@cameron.newman.io"
 git config --global user.name "Github Actions"
