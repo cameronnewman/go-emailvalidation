@@ -10,8 +10,8 @@
 [2]: https://godoc.org/github.com/cameronnewman/go-emailvalidation
 [3]: https://goreportcard.com/badge/github.com/cameronnewman/go-emailvalidation
 [4]: https://goreportcard.com/report/github.com/cameronnewman/go-emailvalidation
-[5]: https://travis-ci.org/cameronnewman/go-emailvalidation.svg?branch=master
-[6]: https://travis-ci.org/cameronnewman/go-emailvalidation
+[5]: https://github.com/cameronnewman/go-emailvalidation/workflows/pipeline/badge.svg
+[6]: https://github.com/cameronnewman/go-emailvalidation/actions
 [7]: https://codecov.io/gh/cameronnewman/go-emailvalidation/branch/master/graph/badge.svg
 [8]: https://codecov.io/gh/cameronnewman/go-emailvalidation
 [9]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcameronnewman%2Fgo-emailvalidation.svg?type=shield

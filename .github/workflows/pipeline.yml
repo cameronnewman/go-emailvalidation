@@ -1,0 +1,31 @@
+name: Continuous Integration
+on: [push]
+jobs:
+
+  build:
+    name: build - fmt/lint/test
+    runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: ci
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+    - name: Run fmt
+      run: make fmt
+    - name: Run lint
+      run: make lint
+    - name: Run tests
+      run: make test
+
+  release:
+    if: ${{ github.ref == 'master' }}
+    needs: build
+    name: release
+    runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: ci
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+    - name: Run tag/coverage export
+      run: ./scripts/ci/tag.sh && ./scripts/ci/coverage.sh

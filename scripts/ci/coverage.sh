@@ -1,36 +1,16 @@
 #!/bin/bash
 
 echo "Checking variables"
-echo $TRAVIS
-echo $TRAVIS_TAG
-echo $TRAVIS_BRANCH
-echo $TRAVIS_PULL_REQUEST_BRANCH
-echo $TRAVIS_PULL_REQUEST
+echo $GITHUB_ACTIONS
+echo $GITHUB_REF
 
-# Checks if the tag script is being run on TravisCI
-if [ ! $TRAVIS ]; then
-    echo "This script needs to be run on TravisCI platform"
+# Checks if the tag script is being run on Github Actions
+if [ ! $GITHUB_ACTIONS ]; then
+    echo "This script needs to be run on Github Actions platform"
     exit 1
 fi
 
-# Checks if the build was triggered by a tag commit.
-if [ ! -z "$TRAVIS_TAG" ]; then
-    echo "This build was triggered by a git tag push"
-    exit 1
-fi
-
-if [ "$TRAVIS_PULL_REQUEST" -eq "$TRAVIS_PULL_REQUEST" 2>/dev/null ] || [[ "$TRAVIS_PULL_REQUEST" =~ ^[0-9]+$ ]]; then 
-    echo "This build was triggered by a Pull Request (PR)"
-    exit 1 
-fi 
-
-# Checks if the build was triggered Pull Request.
-#if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ ! "$TRAVIS_PULL_REQUEST_BRANCH" = "master" ]; then
-#    echo "Run in a Pull Request"
-#    exit 1
-#fi
-
-if [ ! "$TRAVIS_BRANCH" == "master" ] && [ -z "$TRAVIS_PULL_REQUEST_BRANCH" ]; then
+if [ ! "$GITHUB_REF" == "master" ]; then
     echo "This build is not in the master branch"
     exit 1
 fi
