@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "Checking variables"
-echo $GITHUB_ACTIONS
-echo $GITHUB_REF
+echo GITHUB_ACTIONS: $GITHUB_ACTIONS
+echo GITHUB_REF: $GITHUB_REF
 
 # Checks if the tag script is being run on Github Actions
 if [ ! $GITHUB_ACTIONS ]; then
@@ -36,8 +36,6 @@ git config --global user.email "builds@cameron.newman.io"
 git config --global user.name "Github Actions"
 
 git tag $GIT_TAG -a -m "Generated tag from Github Actions build $GITHUB_RUN_NUMBER"
-echo `git show origin`
-git push -q https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY --tag > /dev/null 2>&1
-
+git push --tag > /dev/null 2>&1
 echo "Pushed tag to repo"
 exit 1
