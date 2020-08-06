@@ -2,26 +2,29 @@ name: Continuous Integration
 on: [push]
 jobs:
 
-  build:
+  test:
     runs-on: ubuntu-latest
-    name: build - fmt/lint/test
+    if: github.ref != 'refs/heads/master'
+    name: fmt, lint, test
     env:
       ENVIRONMENT: ci
     steps:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
+
     - name: Run fmt
       run: make fmt
+
     - name: Run lint
       run: make lint
+
     - name: Run tests
       run: make test
 
   release:
     runs-on: ubuntu-latest
-    needs: build
     if: github.ref == 'refs/heads/master'
-    name: release
+    name: test, coverage export and tag
     env:
       ENVIRONMENT: ci
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
@@ -29,7 +32,12 @@ jobs:
     steps:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
+    
+    - name: Run tests
+      run: make test
+
     - name: Run coverage export
       run: ./scripts/ci/coverage.sh
+    
     - name: Run tag export
       run: ./scripts/ci/tag.sh
