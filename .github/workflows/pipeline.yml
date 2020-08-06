@@ -3,8 +3,8 @@ on: [push]
 jobs:
 
   build:
-    name: build - fmt/lint/test
     runs-on: ubuntu-latest
+    name: build - fmt/lint/test
     env:
       ENVIRONMENT: ci
     steps:
@@ -18,10 +18,10 @@ jobs:
       run: make test
 
   release:
-    if: ${{ github.ref == 'master' }}
-    needs: build
-    name: release
     runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    name: release
     env:
       ENVIRONMENT: ci
     steps:
