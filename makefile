@@ -4,10 +4,10 @@ SHA1         		:= $(shell git rev-parse --verify --short HEAD)
 MAJOR_VERSION		:= $(shell cat lib.json | sed -n 's/.*"major": "\(.*\)",/\1/p')
 MINOR_VERSION		:= $(shell cat lib.json | sed -n 's/.*"minor": "\(.*\)"/\1/p')
 INTERNAL_BUILD_ID	:= $(shell [ -z "${TRAVIS_BUILD_NUMBER}" ] && echo "local" || echo ${TRAVIS_BUILD_NUMBER})
-BINARY				:= $(shell cat lib.json | sed -n 's/.*"name": "\(.*\)",/\1/p')
-VERSION				:= $(shell echo "${MAJOR_VERSION}.${MINOR_VERSION}.${INTERNAL_BUILD_ID}-${SHA1}")
-BUILD_IMAGE			:= $(shell echo "golang:1.12.5")
-PWD					:= $(shell pwd)
+BINARY			:= $(shell cat lib.json | sed -n 's/.*"name": "\(.*\)",/\1/p')
+VERSION			:= $(shell echo "${MAJOR_VERSION}.${MINOR_VERSION}.${INTERNAL_BUILD_ID}-${SHA1}")
+BUILD_IMAGE		:= $(shell echo "golang:1.14.6")
+PWD			:= $(shell pwd)
 
 .DEFAULT_GOAL := test
 
