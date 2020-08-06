@@ -38,4 +38,4 @@ git config --global user.name "Github Actions"
 git tag $GIT_TAG -a -m "Generated tag from Github Actions build $GITHUB_RUN_NUMBER"
 git push --tag > /dev/null 2>&1
 echo "Pushed tag to repo"
-exit 1
+exit 0

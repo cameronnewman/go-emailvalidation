@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+v2.2.25
+------
+
+### Improvements
+
+- Switched to Github Actions and removed TravisCI
+
 v2.1.144
 ------
 
