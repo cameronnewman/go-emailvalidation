@@ -5,7 +5,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/master'
-    name: fmt/lint/test
+    name: fmt, lint, test
     env:
       ENVIRONMENT: ci
     steps:
@@ -24,7 +24,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
-    name: release
+    name: test, coverage export and tag
     env:
       ENVIRONMENT: ci
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
