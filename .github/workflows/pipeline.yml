@@ -27,17 +27,19 @@ jobs:
     name: test, coverage export and tag
     env:
       ENVIRONMENT: ci
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
-    
+      
     - name: Run tests
       run: make test
 
-    - name: Run coverage export
-      run: ./scripts/ci/coverage.sh
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.txt
     
     - name: Run tag export
       run: ./scripts/ci/tag.sh
