@@ -1,36 +1,16 @@
 #!/bin/bash
 
 echo "Checking variables"
-echo $TRAVIS
-echo $TRAVIS_TAG
-echo $TRAVIS_BRANCH
-echo $TRAVIS_PULL_REQUEST_BRANCH
-echo $TRAVIS_PULL_REQUEST
+echo $GITHUB_ACTIONS
+echo $GITHUB_REF
 
-# Checks if the tag script is being run on TravisCI
-if [ ! $TRAVIS ]; then
-    echo "This script needs to be run on TravisCI platform"
+# Checks if the tag script is being run on Github Actions
+if [ ! $GITHUB_ACTIONS ]; then
+    echo "This script needs to be run on Github Actions platform"
     exit 1
 fi
 
-# Checks if the build was triggered by a tag commit.
-if [ ! -z "$TRAVIS_TAG" ]; then
-    echo "This build was triggered by a git tag push"
-    exit 1
-fi
-
-if [ "$TRAVIS_PULL_REQUEST" -eq "$TRAVIS_PULL_REQUEST" 2>/dev/null ] || [[ "$TRAVIS_PULL_REQUEST" =~ ^[0-9]+$ ]]; then 
-    echo "This build was triggered by a Pull Request (PR)"
-    exit 1 
-fi 
-
-# Checks if the build was triggered Pull Request.
-#if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ ! "$TRAVIS_PULL_REQUEST_BRANCH" = "master" ]; then
-#    echo "Run in a Pull Request"
-#    exit 1
-#fi
-
-if [ ! "$TRAVIS_BRANCH" == "master" ] && [ -z "$TRAVIS_PULL_REQUEST_BRANCH" ]; then
+if [ ! "$GITHUB_REF" == "master" ]; then
     echo "This build is not in the master branch"
     exit 1
 fi
@@ -42,22 +22,22 @@ if [ ! -f BUILD_VERSION.txt ]; then
 fi
 
 # Checks if the Github OAuth Token was set.
-if [ -z "$GITHUB_OAUTH_TOKEN" ]; then
-    echo "The GITHUB_OAUTH_TOKEN has not been set"
+if [ -z "$GITHUB_TOKEN" ]; then
+    echo "The GITHUB_TOKEN has not been set"
     exit 2
 fi
 
 export GIT_TAG=`cat BUILD_VERSION.txt`
 
 echo "Tagging release version $GIT_TAG"
-echo $TRAVIS_BRANCH
+echo $GITHUB_REF
 
-git config --global user.email "builds@travis-ci.com"
-git config --global user.name "Travis CI"
+git config --global user.email "builds@cameron.newman.io"
+git config --global user.name "Github Actions"
 
-git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
+git tag $GIT_TAG -a -m "Generated tag from Github Actions build $GITHUB_RUN_NUMBER"
 echo `git show origin`
-git push -q https://$GITHUB_OAUTH_TOKEN@github.com/$TRAVIS_REPO_SLUG --tag > /dev/null 2>&1
+git push -q https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY --tag > /dev/null 2>&1
 
 echo "Pushed tag to repo"
 exit 1

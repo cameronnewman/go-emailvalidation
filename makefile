@@ -2,7 +2,7 @@
 SHA1				:= $(shell git rev-parse --verify HEAD)
 SHA1_SHORT			:= $(shell git rev-parse --verify --short HEAD)
 VERSION				:= $(shell cat VERSION.txt)
-INTERNAL_BUILD_ID	:= $(shell [ -z "${GITHUB_RUN_ID}" ] && echo "0" || echo ${GITHUB_RUN_ID})
+INTERNAL_BUILD_ID	:= $(shell [ -z "${GITHUB_RUN_NUMBER}" ] && echo "0" || echo ${GITHUB_RUN_NUMBER})
 PWD					:= $(shell pwd)
 VERSION_HASH		:= ${VERSION}.${INTERNAL_BUILD_ID}-${SHA1_SHORT}
 
