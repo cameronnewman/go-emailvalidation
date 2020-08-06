@@ -36,8 +36,8 @@ if [ ! "$TRAVIS_BRANCH" == "master" ] && [ -z "$TRAVIS_PULL_REQUEST_BRANCH" ]; t
 fi
 
 # Checks if the VERSION file exists from the makefile
-if [ ! -f VERSION.txt ]; then
-    echo "VERSION.txt file not found!"
+if [ ! -f BUILD_VERSION.txt ]; then
+    echo "BUILD_VERSION.txt file not found!"
     exit 2
 fi
 
@@ -47,7 +47,7 @@ if [ -z "$GITHUB_OAUTH_TOKEN" ]; then
     exit 2
 fi
 
-export GIT_TAG=`cat VERSION.txt`
+export GIT_TAG=`cat BUILD_VERSION.txt`
 
 echo "Tagging release version $GIT_TAG"
 echo $TRAVIS_BRANCH

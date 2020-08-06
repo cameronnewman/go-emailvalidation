@@ -1,0 +1,36 @@
+name: pipeline
+on: [push]
+jobs:
+
+  fmt:
+    name: fmt
+    runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: ci
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+    - name: Run fmt
+      run: make fmt
+
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: ci
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+    - name: Run lint
+      run: make lint
+
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: ci
+    steps:
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+    - name: Run tests
+      run: make test
