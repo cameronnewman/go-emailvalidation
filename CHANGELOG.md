@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-v2.2.25
+v2.3.26
 ------
 
 ### Improvements
