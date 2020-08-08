@@ -9,10 +9,11 @@ VERSION_HASH		:= ${VERSION}.${INTERNAL_BUILD_ID}-${SHA1_SHORT}
 BUILD_IMAGE			:= golang:1.14.6
 LINT_IMAGE			:= golangci/golangci-lint:v1.30.0
 SHELL_LINT_IMAGE	:= koalaman/shellcheck:latest
+MARKDOWN_LINT_IMAGE := tmknom/markdownlint
 
 ENVIRONMENT 		?= local
 
-.DEFAULT_GOAL := test
+.DEFAULT_GOAL 		:= test
 
 # HELP
 # This will output the help for each task
@@ -26,7 +27,7 @@ version:
 	$(shell echo v$(VERSION_HASH) > BUILD_VERSION.txt)
 
 .PHONY: fmt
-fmt: version ## Runs go fmt on code base
+fmt: version ## Runs `go fmt` within a docker container
 	@echo "Running fmt"
 
 	docker run --rm \
@@ -37,7 +38,7 @@ fmt: version ## Runs go fmt on code base
 	@echo "Completed fmt"
 
 .PHONY: lint
-lint: version ## Runs more than 20 different linters using golangci-lint to ensure consistency in code.
+lint: version ## Runs more than 60 different linters using golangci-lint, shellcheck and markdownlint to ensure consistency in code.
 	@echo "Running Lint"
 	
 	docker run --rm \
@@ -53,10 +54,14 @@ lint: version ## Runs more than 20 different linters using golangci-lint to ensu
 	-w /usr/src/app \
 	$(SHELL_LINT_IMAGE)
 
+	docker run -i --rm \
+	-v $(PWD):/work \
+	$(MARKDOWN_LINT_IMAGE)
+
 	@echo "Completed Lint"
 
 .PHONY: test
-test: version ## Runs the tests within a docker container
+test: version ## Runs `go test` within a docker container
 	@echo "Running Tests"
 
 	docker run --rm \
@@ -64,11 +69,4 @@ test: version ## Runs the tests within a docker container
 	-w /usr/src/app $(BUILD_IMAGE) \
 	go test -cover -race -coverprofile=coverage.txt -v -p 8 -count=1 ./...
 
-	@echo "Completed tests"
-
-.PHONY: old_test
-old_test: version
-	@echo "Running Tests"
-
-	docker run -e GO111MODULE=auto --rm -t -v $(PWD):/usr/src/myapp -w /usr/src/myapp $(BUILD_IMAGE) sh -c "go test -cover -race -coverprofile=coverage.txt -covermode=atomic -v ./... -count=1"
 	@echo "Completed tests"
