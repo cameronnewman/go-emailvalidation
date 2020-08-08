@@ -27,14 +27,15 @@ if [ -z "$GITHUB_TOKEN" ]; then
     exit 2
 fi
 
-export GIT_TAG=`cat BUILD_VERSION.txt`
+readonly GIT_TAG=$(cat BUILD_VERSION.txt)
 
 echo "Tagging release version $GIT_TAG"
+echo "$GITHUB_REF"
 
-git config --global user.email "builds@cameron.newman.io"
+git config --global user.email "noreply@github.com"
 git config --global user.name "Github Actions"
 
-git tag $GIT_TAG -a -m "Generated tag from Github Actions build $GITHUB_RUN_NUMBER"
+git tag "$GIT_TAG" -a -m "Generated tag from Github Actions build $GITHUB_RUN_NUMBER"
 git push --tag > /dev/null 2>&1
 echo "Pushed tag to repo"
 exit 0
