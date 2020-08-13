@@ -85,6 +85,7 @@ func validateFormatAndSplit(email string) (username string, domain string, err e
 		return emptyString, emptyString, ErrInvalidFormat
 	}
 
+	// Regex matches as per rfc 822 https://tools.ietf.org/html/rfc822
 	if !emailRegexp.MatchString(email) {
 		return emptyString, emptyString, ErrInvalidFormat
 	}
