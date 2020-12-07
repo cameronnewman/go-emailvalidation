@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	email "github.com/cameronnewman/go-emailvalidation/v2"
+	email "github.com/cameronnewman/go-emailvalidation"
 )
 
 func main() {
