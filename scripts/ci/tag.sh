@@ -27,7 +27,8 @@ if [ -z "$GITHUB_TOKEN" ]; then
     exit 2
 fi
 
-readonly GIT_TAG=$(cat BUILD_VERSION.txt)
+GIT_TAG=$(cat BUILD_VERSION.txt)
+readonly GIT_TAG
 
 echo "Tagging release version $GIT_TAG"
 echo "$GITHUB_REF"
