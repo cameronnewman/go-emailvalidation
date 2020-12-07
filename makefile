@@ -8,7 +8,7 @@ VERSION_HASH		:= ${VERSION}.${INTERNAL_BUILD_ID}-${SHA1_SHORT}
 
 BUILD_IMAGE			:= golang:1.15
 LINT_IMAGE			:= golangci/golangci-lint:v1.33.0
-SHELL_LINT_IMAGE	:= koalaman/shellcheck:latest
+SHELL_LINT_IMAGE	:= koalaman/shellcheck:v0.7.1
 MARKDOWN_LINT_IMAGE := tmknom/markdownlint
 
 ENVIRONMENT 		?= local
