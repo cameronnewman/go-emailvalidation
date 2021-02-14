@@ -4,7 +4,7 @@ SHA1_SHORT			:= $(shell git rev-parse --verify --short HEAD)
 VERSION				:= $(shell cat VERSION.txt)
 INTERNAL_BUILD_ID	:= $(shell [ -z "${GITHUB_RUN_NUMBER}" ] && echo "0" || echo ${GITHUB_RUN_NUMBER})
 PWD					:= $(shell pwd)
-VERSION_HASH		:= ${VERSION}.${INTERNAL_BUILD_ID}-${SHA1_SHORT}
+VERSION_HASH		:= ${VERSION}.${INTERNAL_BUILD_ID}
 
 BUILD_IMAGE			:= golang:1.15
 LINT_IMAGE			:= golangci/golangci-lint:v1.33.0
