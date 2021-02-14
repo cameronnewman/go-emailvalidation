@@ -126,14 +126,14 @@ func TestValidate(t *testing.T) {
 			false,
 		},
 		{
-			"InvalidEmailAddress/NoAt",
+			"InvalidEmailAddress/NoAtSymbol",
 			args{
 				email: "john.snow_gmail.com",
 			},
 			true,
 		},
 		{
-			"InvalidDomain/NonExistantDomain",
+			"InvalidDomain/NonExistentDomain",
 			args{
 				email: "justin@gggggggmmmmaaaiiilllll.com",
 			},
@@ -147,7 +147,7 @@ func TestValidate(t *testing.T) {
 			true,
 		},
 		{
-			"InvalidDomain/NonExistantDomain",
+			"InvalidDomain/InvalidCharacters",
 			args{
 				email: "john.snow&@gggggggmmmmaaaiizilllll.com",
 			},
@@ -318,7 +318,7 @@ func TestValidateDomainRecords(t *testing.T) {
 			true,
 		},
 		{
-			"InvalidDomain/NonExistantDomain",
+			"InvalidDomain/NonExistentDomain",
 			args{
 				email: "justin@gggggggmmmmaaaiiilllll.com",
 			},
@@ -332,7 +332,7 @@ func TestValidateDomainRecords(t *testing.T) {
 			true,
 		},
 		{
-			"InvalidDomain/NonExistantDomain",
+			"InvalidDomain/NonExistentDomain",
 			args{
 				email: "john.snow&@gggggggmmmmaaaiizilllll.com",
 			},
