@@ -49,7 +49,7 @@ func ValidateDomainRecords(email string) error {
 	if err != nil {
 		return ErrInvalidDomainNoNameServers
 	}
-	
+
 	// Added NS check as some ISPs hijack the MX record lookup :(
 	if effectiveTLDPlusOne == domain {
 		nsRecords, err := net.LookupNS(effectiveTLDPlusOne)
