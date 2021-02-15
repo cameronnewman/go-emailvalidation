@@ -23,6 +23,14 @@ Simple email validation package. Package valids email address string to
 RFC requirements andperforms a DNS lookup for the MX records
 using the local DNS settings.
 
+## Supported versions
+
+The current version is v3
+
+Please use go modules and import via `github.com/cameronnewman/go-emailvalidation/v3`.
+
+For older versions, please use the latest v2 tag. V1 is no longer supported
+
 ## Usage
 
 ```golang
