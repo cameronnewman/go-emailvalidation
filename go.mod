@@ -1,4 +1,4 @@
-module github.com/cameronnewman/go-emailvalidation/v2
+module github.com/cameronnewman/go-emailvalidation/v3
 
 go 1.15
 
