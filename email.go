@@ -1,6 +1,7 @@
 package email
 
 import (
+	"golang.org/x/net/publicsuffix"
 	"net"
 	"regexp"
 	"strings"
@@ -44,14 +45,28 @@ func ValidateDomainRecords(email string) error {
 		return err
 	}
 
-	// Added NS check as some ISPs hijack the MX record lookup :(
-	nsRecords, err := net.LookupNS(domain)
-	if err != nil || len(nsRecords) == 0 {
+	effectiveTLDPlusOne, err := publicsuffix.EffectiveTLDPlusOne(domain)
+	if err != nil {
 		return ErrInvalidDomainNoNameServers
 	}
 
-	if _, err := net.LookupMX(domain); err != nil {
-		if _, err := net.LookupIP(domain); err != nil {
+	// Added NS check as some ISPs hijack the MX record lookup :(
+	if effectiveTLDPlusOne == domain {
+		nsRecords, err := net.LookupNS(effectiveTLDPlusOne)
+		if err != nil || len(nsRecords) == 0 {
+			return ErrInvalidDomainNoNameServers
+		}
+	} else {
+		nsRecords, err := net.LookupNS(effectiveTLDPlusOne)
+		if err != nil || len(nsRecords) == 0 {
+			return ErrInvalidDomainNoNameServers
+		}
+	}
+
+	mxRecords, err := net.LookupMX(domain)
+	if err != nil || len(mxRecords) == 0 {
+		ipRecords, err := net.LookupIP(domain)
+		if err != nil || len(ipRecords) == 0 {
 			return ErrInvalidDomainNoMXRecords
 		}
 	}

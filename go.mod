@@ -1,3 +1,5 @@
-module github.com/cameronnewman/go-emailvalidation
+module github.com/cameronnewman/go-emailvalidation/v2
 
-go 1.14
+go 1.15
+
+require golang.org/x/net v0.0.0-20210119194325-5f4716e94777

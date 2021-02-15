@@ -126,28 +126,42 @@ func TestValidate(t *testing.T) {
 			false,
 		},
 		{
-			"InvalidEmailAddress/NoAt",
+			"InvalidEmailAddress/NoAtSymbol",
 			args{
 				email: "john.snow_gmail.com",
 			},
 			true,
 		},
 		{
-			"InvalidDomain/NonExistantDomain",
+			"InvalidDomain/NonExistentDomain",
 			args{
 				email: "justin@gggggggmmmmaaaiiilllll.com",
 			},
 			true,
 		},
 		{
-			"InvalidDomain/NoMailRecords",
+			"ValidEmailAddress/SubDomain",
 			args{
-				email: "justin@support.google.com",
+				email: "kasdhaskdhaskdjhaksd@validator.sparkpost.com",
+			},
+			false,
+		},
+		{
+			"InvalidDomain/SubDomain/NoMXORA",
+			args{
+				email: "kasdhaskdhaskdjhaksd@www.cloudfront.net",
 			},
 			true,
 		},
 		{
-			"InvalidDomain/NonExistantDomain",
+			"InvalidDomain/SubDomain/NoMXORA",
+			args{
+				email: "kasdhaskdhaskdjhaksd@bob.www.cloudfront.net",
+			},
+			true,
+		},
+		{
+			"InvalidDomain/InvalidCharactersPrefixAmpersand",
 			args{
 				email: "john.snow&@gggggggmmmmaaaiizilllll.com",
 			},
@@ -201,7 +215,7 @@ func TestValidateFormat(t *testing.T) {
 			false,
 		},
 		{
-			"ValidEmailAddress/DomainNoMXbutA",
+			"ValidEmailAddress/SubDomain/MissingMXSubDomainARecord",
 			args{
 				email: "JohnSnow@support.google.com",
 			},
@@ -311,14 +325,7 @@ func TestValidateDomainRecords(t *testing.T) {
 			true,
 		},
 		{
-			"ValidEmailAddress/DomainNoMXbutA",
-			args{
-				email: "JohnSnow@support.google.com",
-			},
-			true,
-		},
-		{
-			"InvalidDomain/NonExistantDomain",
+			"InvalidDomain/NonExistentDomain",
 			args{
 				email: "justin@gggggggmmmmaaaiiilllll.com",
 			},
@@ -329,10 +336,10 @@ func TestValidateDomainRecords(t *testing.T) {
 			args{
 				email: "justin@support.google.com",
 			},
-			true,
+			false,
 		},
 		{
-			"InvalidDomain/NonExistantDomain",
+			"InvalidDomain/NonExistentDomain",
 			args{
 				email: "john.snow&@gggggggmmmmaaaiizilllll.com",
 			},
