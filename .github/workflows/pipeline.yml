@@ -34,12 +34,6 @@ jobs:
       
     - name: Run tests
       run: make test
-
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.txt
     
     - name: Run tag export
       run: ./scripts/ci/tag.sh
