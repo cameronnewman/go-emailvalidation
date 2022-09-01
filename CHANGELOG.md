@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## v3.1
+
 - Updated to golang 1.19
 - Updated all linters
 
