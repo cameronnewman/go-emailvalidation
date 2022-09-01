@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.1
+- Updated to golang 1.19
+- Updated all linters
+
 ## v2.3
 
 - Switched to Github Actions and removed TravisCI
@@ -11,7 +15,7 @@
 
 ## v2.0.131
 
-- simpleted all functions
+- simplified all functions
 - added Normalize function
 
 - Massively improved all unit tests
