@@ -16,15 +16,15 @@
 
 ## Purpose
 
-Simple email validation package. Package supports fast email validation via
-RFC compliant regex and recursive DNS lookup. DNS validation checks for
+Simple email validation package. Package supports either fast email validation via
+RFC compliant regex OR slower recursive DNS lookup. DNS validation checks for
 valid NS & MX records using the local DNS settings.
 
 ## Supported versions
 
 The current version is v3
 
-Please import via use go modules `github.com/cameronnewman/go-emailvalidation/v3`.
+Please import via go modules `github.com/cameronnewman/go-emailvalidation/v3`.
 
 ## Usage
 
