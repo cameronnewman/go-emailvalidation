@@ -6,10 +6,10 @@ INTERNAL_BUILD_ID	:= $(shell [ -z "${GITHUB_RUN_NUMBER}" ] && echo "0" || echo $
 PWD					:= $(shell pwd)
 VERSION_HASH		:= ${VERSION}.${INTERNAL_BUILD_ID}
 
-BUILD_IMAGE			:= golang:1.19
-LINT_IMAGE			:= golangci/golangci-lint:v1.49.0
-SHELL_LINT_IMAGE	:= koalaman/shellcheck:v0.8.0
-MARKDOWN_LINT_IMAGE := tmknom/markdownlint:0.23.1
+BUILD_IMAGE			:= golang:1.20
+LINT_IMAGE			:= golangci/golangci-lint:v1.51.2
+SHELL_LINT_IMAGE	:= koalaman/shellcheck:v0.9.0
+MARKDOWN_LINT_IMAGE := tmknom/markdownlint:0.33.0
 
 ENVIRONMENT 		?= local
 
