@@ -6,7 +6,7 @@
 [![FOSSA Status][9]][10]
 
 [1]: https://github.com/cameronnewman/go-emailvalidation/workflows/pipeline/badge.svg
-[2]: https://github.com/cameronnewman/go-emailvalidation/actions
+[2]: https://github.com/cameronnewman/go-emailvalidation/actions/workflows/pipeline.yml/badge.svg
 [3]: https://godoc.org/github.com/cameronnewman/go-emailvalidation?status.svg
 [4]: https://godoc.org/github.com/cameronnewman/go-emailvalidation
 [5]: https://goreportcard.com/badge/github.com/cameronnewman/go-emailvalidation
