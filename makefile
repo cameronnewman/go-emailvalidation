@@ -2,14 +2,14 @@
 SHA1				:= $(shell git rev-parse --verify HEAD)
 SHA1_SHORT			:= $(shell git rev-parse --verify --short HEAD)
 VERSION				:= $(shell cat VERSION.txt)
-INTERNAL_BUILD_ID	:= $(shell [ -z "${GITHUB_RUN_NUMBER}" ] && echo "0" || echo ${GITHUB_RUN_NUMBER})
-PWD					:= $(shell pwd)
-VERSION_HASH		:= ${VERSION}.${INTERNAL_BUILD_ID}
+INTERNAL_BUILD_ID		:= $(shell [ -z "${GITHUB_RUN_NUMBER}" ] && echo "0" || echo ${GITHUB_RUN_NUMBER})
+PWD				:= $(shell pwd)
+VERSION_HASH			:= ${VERSION}.${INTERNAL_BUILD_ID}
 
-BUILD_IMAGE			:= golang:1.20
-LINT_IMAGE			:= golangci/golangci-lint:v1.51.2
-SHELL_LINT_IMAGE	:= koalaman/shellcheck:v0.9.0
-MARKDOWN_LINT_IMAGE := tmknom/markdownlint:0.33.0
+BUILD_IMAGE			:= golang:1.21
+LINT_IMAGE			:= golangci/golangci-lint:v1.55.2
+SHELL_LINT_IMAGE		:= koalaman/shellcheck:v0.9.0
+MARKDOWN_LINT_IMAGE 		:= tmknom/markdownlint:0.33.0
 
 ENVIRONMENT 		?= local
 
