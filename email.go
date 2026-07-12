@@ -15,7 +15,7 @@ var (
 	emailRegexp = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 )
 
-//Validate - validates an email address via all options
+// Validate - validates an email address via all options
 func Validate(email string) error {
 
 	err := ValidateDomainRecords(email)
@@ -26,7 +26,7 @@ func Validate(email string) error {
 	return nil
 }
 
-//ValidateFormat - validates an email address meets rfc 822 format via a regex
+// ValidateFormat - validates an email address meets rfc 822 format via a regex
 func ValidateFormat(email string) error {
 
 	_, _, err := validateFormatAndSplit(email)
@@ -37,7 +37,7 @@ func ValidateFormat(email string) error {
 	return nil
 }
 
-//ValidateDomainRecords - validates an email address domain's NS and MX records via a DNS lookup
+// ValidateDomainRecords - validates an email address domain's NS and MX records via a DNS lookup
 func ValidateDomainRecords(email string) error {
 
 	_, domain, err := validateFormatAndSplit(email)
@@ -74,7 +74,7 @@ func ValidateDomainRecords(email string) error {
 	return nil
 }
 
-//Split - Splits an email address into a username prefix and domain
+// Split - Splits an email address into a username prefix and domain
 func Split(email string) (username string, domain string) {
 
 	username, domain, err := validateFormatAndSplit(email)
