@@ -22,7 +22,7 @@ valid NS & MX records using the local DNS settings.
 
 ## Supported versions
 
-The current version is v3 and requires Go 1.25 or later.
+The current version is v3 and requires Go 1.26 or later.
 
 Please import via go modules `github.com/cameronnewman/go-emailvalidation/v3`.
 
