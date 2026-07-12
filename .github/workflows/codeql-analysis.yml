@@ -25,7 +25,11 @@ jobs:
       fail-fast: false
       matrix:
         # 'actions' scans the GitHub Actions workflows themselves
-        language: ['go', 'actions']
+        include:
+        - language: go
+          build-mode: autobuild
+        - language: actions
+          build-mode: none
 
     steps:
     - name: Checkout repository
@@ -36,7 +40,7 @@ jobs:
       uses: github/codeql-action/init@v4
       with:
         languages: ${{ matrix.language }}
-        build-mode: none
+        build-mode: ${{ matrix.build-mode }}
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
