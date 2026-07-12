@@ -37,17 +37,16 @@ jobs:
 
     # Pinned to an immutable commit SHA (v0.36.0) rather than a mutable tag,
     # as trivy-action tags were compromised in a March 2026 supply chain attack.
+    # Scan policy (scanners, severity, exit code, ignores) lives in
+    # trivy.yaml / .trivyignore so local scans behave the same as CI.
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
       with:
         scan-type: 'fs'
         scan-ref: '.'
-        scanners: 'vuln,secret,misconfig'
-        severity: 'CRITICAL,HIGH,MEDIUM'
-        ignore-unfixed: true
+        trivy-config: 'trivy.yaml'
         format: 'sarif'
         output: 'trivy-results.sarif'
-        exit-code: '1'
 
     - name: Upload Trivy scan results to GitHub Security tab
       if: always()

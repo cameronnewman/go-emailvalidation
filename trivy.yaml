@@ -1,0 +1,26 @@
+# Trivy configuration
+# Reference: https://trivy.dev/docs/latest/references/configuration/config-file/
+#
+# Used by the CI security job (.github/workflows/pipeline.yml) and for
+# local scans:
+#   trivy fs --config trivy.yaml .
+
+# Report options
+exit-code: 1
+severity:
+  - MEDIUM
+  - HIGH
+  - CRITICAL
+ignorefile: .trivyignore
+
+# Scan options
+scan:
+  scanners:
+    - vuln
+    - secret
+    - misconfig
+
+# Vulnerability options
+vulnerability:
+  # Only report vulnerabilities that have a published fix
+  ignore-unfixed: true

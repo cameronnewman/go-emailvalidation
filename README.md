@@ -75,7 +75,8 @@ func main() {
 
 See [SECURITY.md](SECURITY.md) for the supported versions and how to
 report a vulnerability. Dependencies and code are scanned in CI with
-Trivy and CodeQL.
+Trivy and CodeQL. The Trivy scan policy is defined in `trivy.yaml`,
+and suppressed findings are tracked in `.trivyignore`.
 
 ## License
 

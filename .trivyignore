@@ -1,0 +1,11 @@
+# Trivy ignore file
+# Reference: https://trivy.dev/docs/latest/configuration/filtering/
+#
+# One vulnerability/secret/misconfiguration ID per line. Entries listed
+# here are suppressed from Trivy scan results, so every entry MUST be
+# documented with a reason and revisited regularly.
+#
+# Example:
+# CVE-2099-12345  # false positive: vulnerable code path not reachable
+#
+# Currently nothing is ignored.

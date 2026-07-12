@@ -4,7 +4,8 @@
 
 - Updated to golang 1.26
 - Bumped golang.org/x/net from v0.23.0 to v0.57.0
-- Added Trivy vulnerability/secret/misconfiguration scanning to CI
+- Added Trivy vulnerability/secret/misconfiguration scanning to CI,
+  with scan policy in trivy.yaml and suppressions in .trivyignore
 - Updated GitHub Actions (checkout v6, CodeQL v4) with least-privilege
   workflow permissions
 - Updated linter images (golangci-lint v2.12.2, shellcheck v0.11.0)
