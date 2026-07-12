@@ -32,7 +32,9 @@ Please import via go modules `github.com/cameronnewman/go-emailvalidation/v3`.
 package main
 
 import (
+    "context"
     "fmt"
+    "time"
 
     email "github.com/cameronnewman/go-emailvalidation/v3"
 )
@@ -44,6 +46,15 @@ func main() {
     // Run all checks, including validating the format along with DNS lookups which
     // may be slower depending on your DNS server performance
     err := email.Validate(emailAddress)
+    if err != nil {
+        fmt.Println(err)
+    }
+
+    // Same as above, with a timeout on the DNS lookups
+    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancel()
+
+    err = email.ValidateContext(ctx, emailAddress)
     if err != nil {
         fmt.Println(err)
     }
