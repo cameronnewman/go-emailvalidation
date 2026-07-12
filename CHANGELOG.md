@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v3.4
+
+- Added context-aware validation (ValidateContext,
+  ValidateDomainRecordsContext) and a Validator type with a pluggable
+  DNS Resolver
+- DNS lookup failures are now wrapped, so errors.Is/errors.As can
+  distinguish transient lookup errors (timeouts, cancellation) from
+  domains with missing records
+- Stricter RFC 5322 format check: consecutive, leading or trailing dots
+  in the local part are now rejected
+- Removed duplicated name server lookup logic
+- Unit tests no longer depend on live DNS (go test -short skips the
+  single remaining live-DNS integration test)
+
 ## v3.3
 
 - Updated to golang 1.26

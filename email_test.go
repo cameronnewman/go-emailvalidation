@@ -1,10 +1,81 @@
 package email
 
 import (
+	"context"
+	"errors"
+	"net"
+	"strings"
 	"testing"
+	"time"
 )
 
+// fakeResolver serves DNS records from in-memory maps so tests do not
+// depend on live DNS. Names are matched case-insensitively, like real DNS.
+type fakeResolver struct {
+	ns map[string][]*net.NS
+	mx map[string][]*net.MX
+	ip map[string][]net.IP
+}
+
+func (f *fakeResolver) LookupNS(ctx context.Context, name string) ([]*net.NS, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	if records, ok := f.ns[strings.ToLower(name)]; ok {
+		return records, nil
+	}
+	return nil, &net.DNSError{Err: "no such host", Name: name, IsNotFound: true}
+}
+
+func (f *fakeResolver) LookupMX(ctx context.Context, name string) ([]*net.MX, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	if records, ok := f.mx[strings.ToLower(name)]; ok {
+		return records, nil
+	}
+	return nil, &net.DNSError{Err: "no such host", Name: name, IsNotFound: true}
+}
+
+func (f *fakeResolver) LookupIP(ctx context.Context, network, host string) ([]net.IP, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	if records, ok := f.ip[strings.ToLower(host)]; ok {
+		return records, nil
+	}
+	return nil, &net.DNSError{Err: "no such host", Name: host, IsNotFound: true}
+}
+
+func newFakeResolver() *fakeResolver {
+	return &fakeResolver{
+		ns: map[string][]*net.NS{
+			"gmail.com":      {{Host: "ns1.google.com."}},
+			"google.com":     {{Host: "ns1.google.com."}},
+			"sparkpost.com":  {{Host: "ns1.sparkpost.com."}},
+			"cloudfront.net": {{Host: "ns1.cloudfront.net."}},
+		},
+		mx: map[string][]*net.MX{
+			"gmail.com":               {{Host: "gmail-smtp-in.l.google.com.", Pref: 5}},
+			"validator.sparkpost.com": {{Host: "mx.sparkpost.com.", Pref: 10}},
+		},
+		ip: map[string][]net.IP{
+			"support.google.com": {net.ParseIP("142.250.70.142")},
+		},
+	}
+}
+
+// useFakeResolver points the package-level functions at the fake resolver
+// for the duration of a test.
+func useFakeResolver(t *testing.T) {
+	t.Helper()
+	orig := defaultValidator.Resolver
+	defaultValidator.Resolver = newFakeResolver()
+	t.Cleanup(func() { defaultValidator.Resolver = orig })
+}
+
 func TestValidate(t *testing.T) {
+	useFakeResolver(t)
 	type args struct {
 		email string
 	}
@@ -291,6 +362,27 @@ func TestValidateFormat(t *testing.T) {
 			},
 			true,
 		},
+		{
+			"InvalidEmailAddress/ConsecutiveDotsInPrefix",
+			args{
+				email: "john..snow@gmail.com",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/LeadingDotInPrefix",
+			args{
+				email: ".john@gmail.com",
+			},
+			true,
+		},
+		{
+			"InvalidEmailAddress/TrailingDotInPrefix",
+			args{
+				email: "john.@gmail.com",
+			},
+			true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -302,6 +394,7 @@ func TestValidateFormat(t *testing.T) {
 }
 
 func TestValidateDomainRecords(t *testing.T) {
+	useFakeResolver(t)
 	type args struct {
 		email string
 	}
@@ -352,6 +445,66 @@ func TestValidateDomainRecords(t *testing.T) {
 				t.Errorf("email.ValidateDomainMailRecords() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
+	}
+}
+
+func TestValidatorCustomResolver(t *testing.T) {
+	v := &Validator{Resolver: newFakeResolver()}
+
+	if err := v.Validate(context.Background(), "john.snow@gmail.com"); err != nil {
+		t.Errorf("Validator.Validate() error = %v, want nil", err)
+	}
+
+	err := v.Validate(context.Background(), "john.snow@gggggggmmmmaaaiizilllll.com")
+	if !errors.Is(err, ErrInvalidDomainNoNameServers) {
+		t.Errorf("Validator.Validate() error = %v, want ErrInvalidDomainNoNameServers", err)
+	}
+}
+
+func TestValidateDomainRecordsWrapsLookupErrors(t *testing.T) {
+	useFakeResolver(t)
+
+	err := ValidateDomainRecords("justin@gggggggmmmmaaaiiilllll.com")
+	if !errors.Is(err, ErrInvalidDomainNoNameServers) {
+		t.Fatalf("error = %v, want ErrInvalidDomainNoNameServers", err)
+	}
+
+	var dnsErr *net.DNSError
+	if !errors.As(err, &dnsErr) {
+		t.Fatalf("error = %v, want wrapped *net.DNSError", err)
+	}
+	if !dnsErr.IsNotFound {
+		t.Errorf("dnsErr.IsNotFound = false, want true")
+	}
+}
+
+func TestValidateContextCancellation(t *testing.T) {
+	useFakeResolver(t)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	err := ValidateContext(ctx, "john.snow@gmail.com")
+	if !errors.Is(err, ErrInvalidDomainNoNameServers) {
+		t.Fatalf("error = %v, want ErrInvalidDomainNoNameServers", err)
+	}
+	if !errors.Is(err, context.Canceled) {
+		t.Errorf("error = %v, want wrapped context.Canceled", err)
+	}
+}
+
+// TestValidateLiveDNS is the only test that performs real DNS lookups.
+// Run `go test -short` to skip it.
+func TestValidateLiveDNS(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping live DNS test in short mode")
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	if err := ValidateDomainRecordsContext(ctx, "john.snow@gmail.com"); err != nil {
+		t.Errorf("email.ValidateDomainRecordsContext() error = %v, want nil", err)
 	}
 }
 
