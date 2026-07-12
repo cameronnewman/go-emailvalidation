@@ -5,10 +5,10 @@
 [![Go Report Card][5]][6]
 [![FOSSA Status][9]][10]
 
-[1]: https://github.com/cameronnewman/go-emailvalidation/workflows/pipeline/badge.svg
-[2]: https://github.com/cameronnewman/go-emailvalidation/actions/workflows/pipeline.yml/badge.svg
-[3]: https://godoc.org/github.com/cameronnewman/go-emailvalidation?status.svg
-[4]: https://godoc.org/github.com/cameronnewman/go-emailvalidation
+[1]: https://github.com/cameronnewman/go-emailvalidation/actions/workflows/pipeline.yml/badge.svg
+[2]: https://github.com/cameronnewman/go-emailvalidation/actions/workflows/pipeline.yml
+[3]: https://pkg.go.dev/badge/github.com/cameronnewman/go-emailvalidation/v3.svg
+[4]: https://pkg.go.dev/github.com/cameronnewman/go-emailvalidation/v3
 [5]: https://goreportcard.com/badge/github.com/cameronnewman/go-emailvalidation
 [6]: https://goreportcard.com/report/github.com/cameronnewman/go-emailvalidation
 [9]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcameronnewman%2Fgo-emailvalidation.svg?type=shield
@@ -22,7 +22,7 @@ valid NS & MX records using the local DNS settings.
 
 ## Supported versions
 
-The current version is v3
+The current version is v3 and requires Go 1.26 or later.
 
 Please import via go modules `github.com/cameronnewman/go-emailvalidation/v3`.
 
@@ -64,12 +64,19 @@ func main() {
     // Normalize email address for storage
     address := email.Normalize(emailAddress)
     fmt.Println(address)
+
+    // Split an email address into the username and domain parts
+    username, domain := email.Split(emailAddress)
+    fmt.Println(username, domain)
 }
 ```
 
-## Issues
+## Security
 
-* None
+See [SECURITY.md](SECURITY.md) for the supported versions and how to
+report a vulnerability. Dependencies and code are scanned in CI with
+Trivy and CodeQL. The Trivy scan policy is defined in `trivy.yaml`,
+and suppressed findings are tracked in `.trivyignore`.
 
 ## License
 
